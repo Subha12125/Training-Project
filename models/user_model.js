@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { pass } = require("three/tsl");
+// const { pass } = require("three/tsl");
 
 //? create a user schema
 const userSchema = new mongoose.Schema({
