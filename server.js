@@ -10,6 +10,9 @@ app.get('/', (req, res) => {
 });
 */
 
+//* add json
+app.use(express.json()); 
+
 app.use("/api/auth", router);
 
 //? registration page route

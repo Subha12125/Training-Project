@@ -11,9 +11,9 @@ const home = async (req, res) => {
 }
 const register = async (req, res) => {
     try {
-        res
-            .status(200)
-            .send("Welcome to the register page from auth controller.");
+        res.status(200).json({message:req.body});
+            // .send("Welcome to the register page from auth controller.");
+            
     }
     catch (error) {
         console.log(error);
