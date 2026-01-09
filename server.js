@@ -24,7 +24,6 @@ app.get('/register', (req, res) => {
     res.status(200).send("Welcome to the registration page");
 });*/
 
-app.use("/api/auth/register", router);
 
 //! create a port
 // const PORT = 5000;

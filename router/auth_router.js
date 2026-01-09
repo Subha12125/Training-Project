@@ -10,7 +10,7 @@ router
     .get((req, res) => {
         res.status(200).send("Welcome to the home page from auth router.");
 }); */
-
+//? Router for home page
 router
     .route("/")
     .get(auth_controller.home);
@@ -21,11 +21,14 @@ router
     .get((req, res) => {
         res.status(200).send("Welcome to the registration page from auth router.");
 }); */
-
+//? Router for register page
 router
     .route("/register")
     .post(auth_controller.register);
 
-
+//? Router for login page
+router
+    .route("/login")
+    .post(auth_controller.login);
 
 module.exports = router;

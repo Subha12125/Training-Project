@@ -1,6 +1,5 @@
-const { pass } = require("three/tsl");
 const User = require("../models/user_model");
-// const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 
 //? home
@@ -16,7 +15,7 @@ const home = async (req, res) => {
     }
 }
 
-//? register
+//! register
 const register = async (req, res) => {
     try {
         const {username, email, phone, password} = req.body;
@@ -46,4 +45,39 @@ const register = async (req, res) => {
 
     }
 }
-module.exports = { home, register };
+
+//! Login 
+const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        //Validate input
+        if (!username || !password) {
+            return res.status(400).json({ message: "Provide all details...." });
+        }
+
+        //Check user exists
+        const userExists = await User.findOne({ username });
+        if (!userExists) {
+            return res.status(400).json({ message: "Invalid credentials...." });
+        }
+
+        //Compare password
+        const isMatch = await bcrypt.compare(password, userExists.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials....." });
+        }
+
+        // Success response
+        return res.status(200).json({
+            message: "Login successful",
+            token: await userExists.generateToken()
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+module.exports = { home, register, login };
