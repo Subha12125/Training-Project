@@ -1,6 +1,6 @@
 const User = require("../models/user_model");
 const bcrypt = require("bcryptjs");
-
+const registrationSchema = require("../validators/auth_validator")
 
 //? home
 const home = async (req, res) => {
@@ -18,8 +18,16 @@ const home = async (req, res) => {
 //! register
 const register = async (req, res) => {
     try {
-        const {username, email, phone, password} = req.body;
+        //* Add registrationSchema
+        const value = await registrationSchema.validateAsync(req.body, {
+            abortEarly: false
+        });
+
+
+        // const {username, email, phone, password} = req.body;
+        const {username, email, phone, password} = value;
         const userExists = await User.findOne({email : email});
+
         if(userExists){
             return res.status(400).json({message : "Email is already registered..."});
         }
@@ -41,8 +49,21 @@ const register = async (req, res) => {
             
     }
     catch (error) {
-        console.log(error);
+        if(error.isJoi){
+            const errorMessages = error.details.map(err =>{
+                return err.message;
+            })
 
+            return res.status(400).json({
+                msg: "Valifation falied",
+                errors: errorMessages
+            })
+        }
+
+        return res.status(500).json({
+            msg: "User registration failed....",
+            error: error.message
+        })
     }
 }
 

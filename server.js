@@ -1,6 +1,7 @@
 require("dotenv").config(); 
 
 const express = require('express');
+const cors = require('cors')
 const router = require('./router/auth_router');
 const connectDB = require('./utils/db');
 
@@ -13,9 +14,13 @@ app.get('/', (req, res) => {
 });
 */
 
+//* Call cors
+app.use(cors());
+
 //* add json
 app.use(express.json()); 
 
+//* Router
 app.use("/api/auth", router);
 
 //? registration page route
