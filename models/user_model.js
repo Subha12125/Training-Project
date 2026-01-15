@@ -24,20 +24,16 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save" , async function () {
     const user = this;
-
-    // Only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) {
-        return next();
+    if(!user.isModified('password')){
+        next();
     }
-
-    try {
-        const saltRound = 10;
+    try{
+        const saltRound = 10;;
         const hash_password = await bcrypt.hash(user.password, saltRound);
         user.password = hash_password;
-        next();
-    } catch (error) {
+    } catch(error){
         next(error);
     }
 });

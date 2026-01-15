@@ -70,15 +70,15 @@ const register = async (req, res) => {
 //! Login 
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
         //Validate input
-        if (!username || !password) {
+        if (!email || !password) {
             return res.status(400).json({ message: "Provide all details...." });
         }
 
         //Check user exists
-        const userExists = await User.findOne({ username });
+        const userExists = await User.findOne({ email });
         if (!userExists) {
             return res.status(400).json({ message: "Invalid credentials...." });
         }
